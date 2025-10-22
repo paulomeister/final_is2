@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  frontend:
+    image: frontend:dev
+    container_name: frontend_dev
+    build:
+      context: ./serviCiudad-Frontend
+      dockerfile: Dockerfile
+    init: true
+    volumes:
+      - ./serviCiudad-Frontend:/app
+      - /app/node_modules
+    ports:
+      - "4200:4200"
+    restart: unless-stopped
+    networks:
+      - frontend
+  db:
+    image: postgres:16
+    container_name: serviciudad_db
+    env_file:
+      - .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    networks:
+      - backend
+  backend:
+    env_file:
+      - .env
+    image: backend-serviciudad:dev
+    container_name: backend-serviciudad_dev
+    build:
+      context: ./serviciudad-Backend
+      dockerfile: Dockerfile
+      target: dev
+    init: true
+    volumes:
+      - type: bind
+        source: ./serviciudad-Backend
+        target: /app
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    depends_on:
+      - db
+    networks:
+      - backend
+
+networks:
+  frontend:
+  backend:
+volumes:
+  postgres_data:
+    driver: local
