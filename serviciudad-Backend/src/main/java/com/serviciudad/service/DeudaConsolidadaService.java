@@ -8,6 +8,7 @@ import com.serviciudad.repository.FacturaAcueductoRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Comparator;
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class DeudaConsolidadaService {
         DeudaConsolidadaBuilder builder = new DeudaConsolidadaBuilder()
                 .withClienteId(clienteId)
                 .withNombre(clienteService.obtenerNombrePorId(clienteId))
-                .withFecha(OffsetDateTime.now());
+                .withFecha(OffsetDateTime.now(ZoneOffset.of("-05:00")));
 
         if (fe != null) {
             builder.withEnergia(fe.getPeriodo(), fe.getConsumoKwh() + " kWh", fe.getValorPagar());
