@@ -23,6 +23,7 @@ services:
       - .env
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./facturas_acueducto_init.sql:/docker-entrypoint-initdb.d/facturas_acueducto_init.sql:ro
     ports:
       - "5432:5432"
     restart: unless-stopped
