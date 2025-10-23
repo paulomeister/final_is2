@@ -1,26 +1,18 @@
 package com.serviciudad.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.math.BigDecimal;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class DetalleServicioDTO {
+
     private String periodo;
     private String consumo;
     private BigDecimal valorPagar;
 
-    public DetalleServicioDTO() {}
-
-    public DetalleServicioDTO(String periodo, String consumo, BigDecimal valorPagar) {
-        this.periodo = periodo;
-        this.consumo = consumo;
-        this.valorPagar = valorPagar;
-    }
-
-    public String getPeriodo() { return periodo; }
-    public void setPeriodo(String periodo) { this.periodo = periodo; }
-
-    public String getConsumo() { return consumo; }
-    public void setConsumo(String consumo) { this.consumo = consumo; }
-
-    public BigDecimal getValorPagar() { return valorPagar; }
-    public void setValorPagar(BigDecimal valorPagar) { this.valorPagar = valorPagar; }
 }
