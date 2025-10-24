@@ -27,12 +27,14 @@
             <span *ngIf="isLoading">Consultando...</span>
           </button>
           
-          <button 
+         <!--  <button 
             (click)="testSetData()" 
             class="demo-btn"
+            [disabled]="isLoading"
           >
-            📋 Mostrar Información
-          </button>
+            <span *ngIf="!isLoading">📋 Mostrar Información (Demo)</span>
+            <span *ngIf="isLoading">Consultando...</span>
+          </button> -->
         </div>
         
         <!-- Error Message -->
@@ -40,6 +42,14 @@
           {{ errorMessage }}
         </div>
       </div>
+    </section>
+
+    <!-- Debug Section - Remove in production -->
+    <section *ngIf="consultaData" class="debug-section" style="background: #f0f0f0; padding: 10px; margin: 10px 0; border: 1px solid #ccc;">
+      <h3>Debug Info:</h3>
+      <p><strong>consultaData exists:</strong> {{ !!consultaData }}</p>
+      <p><strong>consultaData type:</strong> {{ typeof consultaData }}</p>
+      <p><strong>consultaData content:</strong> {{ consultaData | json }}</p>
     </section>
 
     <!-- Results Section -->
@@ -55,39 +65,39 @@
             <tbody>
               <tr>
                 <td class="field-label">Nombre del cliente</td>
-                <td class="field-value">{{ consultaData.nombreCliente }}</td>
+                <td class="field-value">{{ consultaData?.nombreCliente || 'N/A' }}</td>
               </tr>
               <tr>
                 <td class="field-label">Fecha de consulta</td>
-                <td class="field-value">{{ consultaData.fechaConsulta }}</td>
+                <td class="field-value">{{ consultaData?.fechaConsulta || 'N/A' }}</td>
               </tr>
               <tr>
                 <td class="field-label">Período Energía</td>
-                <td class="field-value">{{ consultaData.energia.periodo }}</td>
+                <td class="field-value">{{ consultaData?.energia?.periodo || 'N/A' }}</td>
               </tr>
               <tr>
                 <td class="field-label">Consumo Energía (kWh)</td>
-                <td class="field-value">{{ consultaData.energia.consumo }}</td>
+                <td class="field-value">{{ consultaData?.energia?.consumo || 'N/A' }}</td>
               </tr>
               <tr>
                 <td class="field-label">Valor a pagar Energía</td>
-                <td class="field-value">{{ formatCurrency(consultaData.energia.valorPagar) }}</td>
+                <td class="field-value">{{ consultaData?.energia?.valorPagar ? formatCurrency(consultaData.energia.valorPagar) : 'N/A' }}</td>
               </tr>
               <tr>
                 <td class="field-label">Período Acueducto</td>
-                <td class="field-value">{{ consultaData.acueducto.periodo }}</td>
+                <td class="field-value">{{ consultaData?.acueducto?.periodo || 'N/A' }}</td>
               </tr>
               <tr>
                 <td class="field-label">Consumo Acueducto (m³)</td>
-                <td class="field-value">{{ consultaData.acueducto.consumo }}</td>
+                <td class="field-value">{{ consultaData?.acueducto?.consumo || 'N/A' }}</td>
               </tr>
               <tr>
                 <td class="field-label">Valor a pagar Acueducto</td>
-                <td class="field-value">{{ formatCurrency(consultaData.acueducto.valorPagar) }}</td>
+                <td class="field-value">{{ consultaData?.acueducto?.valorPagar ? formatCurrency(consultaData.acueducto.valorPagar) : 'N/A' }}</td>
               </tr>
               <tr class="total-row">
                 <td class="field-label">Valor total a pagar</td>
-                <td class="field-value total-value">{{ formatCurrency(consultaData.totalAPagar) }}</td>
+                <td class="field-value total-value">{{ consultaData?.totalAPagar ? formatCurrency(consultaData.totalAPagar) : 'N/A' }}</td>
               </tr>
             </tbody>
           </table>
