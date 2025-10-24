@@ -1,0 +1,79 @@
+{
+	"info": {
+		"_postman_id": "93b4c39c-7d76-4a4c-973d-897027e864cc",
+		"name": "Postman_Serviciudad",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38352093"
+	},
+	"item": [
+		{
+			"name": "cliente-DiegoRamirez",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/clientes/1234500006/deuda-consolidada",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"clientes",
+						"1234500006",
+						"deuda-consolidada"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cliente-EstebanRojas",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/clientes/1234500005/deuda-consolidada",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"clientes",
+						"1234500005",
+						"deuda-consolidada"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cliente-MarianaTorres",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/clientes/1234500009/deuda-consolidada",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"clientes",
+						"1234500009",
+						"deuda-consolidada"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
