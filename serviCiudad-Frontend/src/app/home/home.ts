@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService, DeudaConsolidadaResponse } from '../api.service';
-import { TestApiComponent } from '../test-api';
+// import { TestApiComponent } from '../test-api'; // Hidden for production
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, FormsModule, TestApiComponent],
+  imports: [CommonModule, FormsModule], // TestApiComponent removed for production
   templateUrl: './home.html',
   styleUrl: './home.css'
 })
@@ -15,7 +15,6 @@ export class Home {
   consultaData: DeudaConsolidadaResponse | null = null;
   isLoading: boolean = false;
   errorMessage: string = '';
-  showResults: boolean = false;
 
   constructor(private apiService: ApiService) {}
 
@@ -27,21 +26,16 @@ export class Home {
 
     this.isLoading = true;
     this.errorMessage = '';
-    this.showResults = false;
     this.consultaData = null;
 
     this.apiService.consultarDeudaConsolidada(this.cedula.trim()).subscribe({
-      next: (data: DeudaConsolidadaResponse) => {
-        console.log('Home Component - Received data:', data);
-        this.consultaData = data;
-        this.showResults = true;
+      next: (data: any) => {
+        this.consultaData = data as DeudaConsolidadaResponse;
         this.isLoading = false;
       },
       error: (error: Error) => {
-        console.error('Home Component - Error:', error);
         this.errorMessage = error.message;
         this.isLoading = false;
-        this.showResults = false;
       }
     });
   }
@@ -50,7 +44,6 @@ export class Home {
     this.cedula = '';
     this.consultaData = null;
     this.errorMessage = '';
-    this.showResults = false;
   }
 
   formatCurrency(value: number): string {
@@ -59,5 +52,27 @@ export class Home {
       currency: 'COP',
       minimumFractionDigits: 0
     }).format(value);
+  }
+
+  // Demo data method for testing
+  testSetData(): void {
+    this.consultaData = {
+      clienteId: '1234500002',
+      nombreCliente: 'Andrés Martínez',
+      fechaConsulta: '2025-10-24T10:00:00Z',
+      energia: {
+        periodo: '202510',
+        consumo: '56 kWh',
+        valorPagar: 1120.00
+      },
+      acueducto: {
+        periodo: '202508',
+        consumo: '31 m³',
+        valorPagar: 205575.83
+      },
+      totalAPagar: 206695.83
+    };
+    this.isLoading = false;
+    this.errorMessage = '';
   }
 }

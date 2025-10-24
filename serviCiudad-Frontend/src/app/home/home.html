@@ -26,6 +26,13 @@
             <span *ngIf="!isLoading">Consultar</span>
             <span *ngIf="isLoading">Consultando...</span>
           </button>
+          
+          <button 
+            (click)="testSetData()" 
+            class="demo-btn"
+          >
+            📋 Mostrar Información
+          </button>
         </div>
         
         <!-- Error Message -->
@@ -36,7 +43,7 @@
     </section>
 
     <!-- Results Section -->
-    <section *ngIf="showResults && consultaData" class="results-section">
+    <section *ngIf="consultaData" class="results-section">
       <div class="results-container">
         <div class="results-header">
           <h2>Resultados de la Consulta</h2>
@@ -88,11 +95,11 @@
       </div>
     </section>
 
-    <!-- Test API Component -->
-    <app-test-api></app-test-api>
+    <!-- Test API Component - Hidden for production -->
+    <!-- <app-test-api></app-test-api> -->
 
     <!-- Empty State -->
-    <section *ngIf="!showResults && !isLoading && !errorMessage" class="empty-state">
+    <section *ngIf="!consultaData && !isLoading && !errorMessage" class="empty-state">
       <div class="empty-state-content">
         <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="40" cy="40" r="40" fill="#f0f0f0"/>
