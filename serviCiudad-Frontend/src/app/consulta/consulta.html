@@ -1,0 +1,117 @@
+<div class="consulta-container">
+  <div class="header">
+    <h1>Consulta de Deuda Consolidada</h1>
+    <p>Ingrese su número de cédula para consultar su deuda consolidada de energía y acueducto.</p>
+  </div>
+
+  <!-- Formulario de búsqueda -->
+  <div class="search-form">
+    <div class="form-group">
+      <label for="cedula">Número de Cédula:</label>
+      <input 
+        type="text" 
+        id="cedula" 
+        [(ngModel)]="cedula" 
+        placeholder="Ej: 1234500002"
+        class="cedula-input"
+        [disabled]="isLoading"
+        (keyup.enter)="buscarDeuda()"
+      >
+    </div>
+    
+    <div class="button-group">
+      <button 
+        type="button" 
+        class="btn-buscar" 
+        (click)="buscarDeuda()"
+        [disabled]="isLoading || !cedula.trim()"
+      >
+        <span *ngIf="!isLoading">🔍 Buscar</span>
+        <span *ngIf="isLoading">⏳ Consultando...</span>
+      </button>
+      
+      <button 
+        type="button" 
+        class="btn-limpiar" 
+        (click)="limpiar()"
+        [disabled]="isLoading"
+      >
+        🗑️ Limpiar
+      </button>
+    </div>
+  </div>
+
+  <!-- Mensaje de error -->
+  <div *ngIf="errorMessage" class="error-message">
+    <span class="error-icon">⚠️</span>
+    {{ errorMessage }}
+  </div>
+
+  <!-- Resultados -->
+  <div *ngIf="deudaData" class="results-container">
+    <div class="results-header">
+      <h2>Información del Cliente</h2>
+    </div>
+    
+    <div class="client-info">
+      <div class="info-item">
+        <span class="label">Cliente ID:</span>
+        <span class="value">{{ deudaData.clienteId }}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Nombre:</span>
+        <span class="value">{{ deudaData.nombreCliente }}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Fecha de Consulta:</span>
+        <span class="value">{{ formatearFecha(deudaData.fechaConsulta) }}</span>
+      </div>
+    </div>
+
+    <!-- Tabla de servicios -->
+    <div class="services-table">
+      <h3>Detalle de Servicios</h3>
+      
+      <table class="services-table-content">
+        <thead>
+          <tr>
+            <th>Servicio</th>
+            <th>Período</th>
+            <th>Consumo</th>
+            <th>Valor a Pagar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="service-row energia">
+            <td class="service-name">
+              <span class="service-icon">⚡</span>
+              Energía
+            </td>
+            <td>{{ deudaData.energia.periodo }}</td>
+            <td>{{ deudaData.energia.consumo }}</td>
+            <td class="amount">{{ formatearMoneda(deudaData.energia.valorPagar) }}</td>
+          </tr>
+          <tr class="service-row acueducto">
+            <td class="service-name">
+              <span class="service-icon">💧</span>
+              Acueducto
+            </td>
+            <td>{{ deudaData.acueducto.periodo }}</td>
+            <td>{{ deudaData.acueducto.consumo }}</td>
+            <td class="amount">{{ formatearMoneda(deudaData.acueducto.valorPagar) }}</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr class="total-row">
+            <td colspan="3" class="total-label">
+              <strong>Total a Pagar:</strong>
+            </td>
+            <td class="total-amount">
+              <strong>{{ formatearMoneda(deudaData.totalAPagar) }}</strong>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</div>

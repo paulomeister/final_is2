@@ -26,6 +26,13 @@
             <span *ngIf="!isLoading">Consultar</span>
             <span *ngIf="isLoading">Consultando...</span>
           </button>
+          
+          <button 
+            (click)="testSetData()" 
+            class="demo-btn"
+          >
+            📋 Mostrar Información
+          </button>
         </div>
         
         <!-- Error Message -->
@@ -36,7 +43,7 @@
     </section>
 
     <!-- Results Section -->
-    <section *ngIf="showResults && consultaData" class="results-section">
+    <section *ngIf="consultaData" class="results-section">
       <div class="results-container">
         <div class="results-header">
           <h2>Resultados de la Consulta</h2>
@@ -48,11 +55,11 @@
             <tbody>
               <tr>
                 <td class="field-label">Nombre del cliente</td>
-                <td class="field-value">{{ consultaData.nombre }}</td>
+                <td class="field-value">{{ consultaData.nombreCliente }}</td>
               </tr>
               <tr>
                 <td class="field-label">Fecha de consulta</td>
-                <td class="field-value">{{ consultaData.fecha_consulta }}</td>
+                <td class="field-value">{{ consultaData.fechaConsulta }}</td>
               </tr>
               <tr>
                 <td class="field-label">Período Energía</td>
@@ -64,23 +71,23 @@
               </tr>
               <tr>
                 <td class="field-label">Valor a pagar Energía</td>
-                <td class="field-value">{{ formatCurrency(consultaData.energia.valor_a_pagar) }}</td>
+                <td class="field-value">{{ formatCurrency(consultaData.energia.valorPagar) }}</td>
               </tr>
               <tr>
-                <td class="field-label">Período Agua</td>
-                <td class="field-value">{{ consultaData.agua.periodo }}</td>
+                <td class="field-label">Período Acueducto</td>
+                <td class="field-value">{{ consultaData.acueducto.periodo }}</td>
               </tr>
               <tr>
-                <td class="field-label">Consumo Agua (m³)</td>
-                <td class="field-value">{{ consultaData.agua.consumido }}</td>
+                <td class="field-label">Consumo Acueducto (m³)</td>
+                <td class="field-value">{{ consultaData.acueducto.consumo }}</td>
               </tr>
               <tr>
-                <td class="field-label">Valor a pagar Agua</td>
-                <td class="field-value">{{ formatCurrency(consultaData.agua.valor_a_pagar) }}</td>
+                <td class="field-label">Valor a pagar Acueducto</td>
+                <td class="field-value">{{ formatCurrency(consultaData.acueducto.valorPagar) }}</td>
               </tr>
               <tr class="total-row">
                 <td class="field-label">Valor total a pagar</td>
-                <td class="field-value total-value">{{ formatCurrency(consultaData.valor_total_a_pagar) }}</td>
+                <td class="field-value total-value">{{ formatCurrency(consultaData.totalAPagar) }}</td>
               </tr>
             </tbody>
           </table>
@@ -88,8 +95,11 @@
       </div>
     </section>
 
+    <!-- Test API Component - Hidden for production -->
+    <!-- <app-test-api></app-test-api> -->
+
     <!-- Empty State -->
-    <section *ngIf="!showResults && !isLoading && !errorMessage" class="empty-state">
+    <section *ngIf="!consultaData && !isLoading && !errorMessage" class="empty-state">
       <div class="empty-state-content">
         <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="40" cy="40" r="40" fill="#f0f0f0"/>
