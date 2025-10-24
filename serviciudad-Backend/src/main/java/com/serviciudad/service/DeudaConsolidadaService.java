@@ -29,6 +29,7 @@ public class DeudaConsolidadaService {
         // 1) energía (archivo)
         List<FacturaEnergia> energias = adaptador.leerFacturas();
         FacturaEnergia fe = energias.stream()
+                .filter(f -> f.getIdCliente() != null && f.getIdCliente().equals(clienteId))
                 .max(Comparator.comparing(FacturaEnergia::getPeriodo))
                 .orElse(null);
 
