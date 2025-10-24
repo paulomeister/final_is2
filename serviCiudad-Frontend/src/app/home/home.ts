@@ -1,22 +1,23 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Consulta, ConsultaResponse } from '../consulta';
+import { ApiService, DeudaConsolidadaResponse } from '../api.service';
+import { TestApiComponent } from '../test-api';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TestApiComponent],
   templateUrl: './home.html',
   styleUrl: './home.css'
 })
 export class Home {
   cedula: string = '';
-  consultaData: ConsultaResponse | null = null;
+  consultaData: DeudaConsolidadaResponse | null = null;
   isLoading: boolean = false;
   errorMessage: string = '';
   showResults: boolean = false;
 
-  constructor(private consultaService: Consulta) {}
+  constructor(private apiService: ApiService) {}
 
   consultar(): void {
     if (!this.cedula.trim()) {
@@ -29,13 +30,15 @@ export class Home {
     this.showResults = false;
     this.consultaData = null;
 
-    this.consultaService.consultarCedula(this.cedula.trim()).subscribe({
-      next: (data: ConsultaResponse) => {
+    this.apiService.consultarDeudaConsolidada(this.cedula.trim()).subscribe({
+      next: (data: DeudaConsolidadaResponse) => {
+        console.log('Home Component - Received data:', data);
         this.consultaData = data;
         this.showResults = true;
         this.isLoading = false;
       },
       error: (error: Error) => {
+        console.error('Home Component - Error:', error);
         this.errorMessage = error.message;
         this.isLoading = false;
         this.showResults = false;

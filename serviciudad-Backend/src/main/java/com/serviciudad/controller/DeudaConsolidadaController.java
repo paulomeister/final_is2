@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/clientes")
-@CrossOrigin(origins = "*")
 public class DeudaConsolidadaController {
 
     private final DeudaConsolidadaService service;
