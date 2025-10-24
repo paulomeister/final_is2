@@ -29,8 +29,7 @@ public class DeudaConsolidadaService {
         // 1) energía (archivo)
         List<FacturaEnergia> energias = adaptador.leerFacturas();
         FacturaEnergia fe = energias.stream()
-                .filter(f -> f.getIdCliente() != null && f.getIdCliente().equals(clienteId))
-                .findFirst()
+                .max(Comparator.comparing(FacturaEnergia::getPeriodo))
                 .orElse(null);
 
         // 2) acueducto (BD) -> tomamos la factura más reciente por periodo (si hay varias)
