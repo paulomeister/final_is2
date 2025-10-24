@@ -97,6 +97,26 @@
   box-shadow: none;
 }
 
+.demo-btn {
+  background-color: #00a243;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  margin-left: 10px;
+}
+
+.demo-btn:hover {
+  background-color: #008a3a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 162, 67, 0.3);
+}
+
 .error-message {
   background-color: #fee;
   color: #c33;
