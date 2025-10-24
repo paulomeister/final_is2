@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService, DeudaConsolidadaResponse } from '../api.service';
+import { DataService } from '../data.service';
 // import { TestApiComponent } from '../test-api'; // Hidden for production
 
 @Component({
@@ -16,34 +17,48 @@ export class Home {
   isLoading: boolean = false;
   errorMessage: string = '';
 
-  constructor(private apiService: ApiService) {}
+  constructor(
+    private apiService: ApiService,
+    private dataService: DataService
+  ) {}
 
   consultar(): void {
     if (!this.cedula.trim()) {
-      this.errorMessage = 'Por favor ingrese un número de cédula válido';
+      this.dataService.setError('Por favor ingrese un número de cédula válido');
       return;
     }
 
-    this.isLoading = true;
-    this.errorMessage = '';
-    this.consultaData = null;
+    this.dataService.setLoading(true);
+    this.dataService.setError('');
+    this.dataService.updateData(null);
 
     this.apiService.consultarDeudaConsolidada(this.cedula.trim()).subscribe({
       next: (data: any) => {
-        this.consultaData = data as DeudaConsolidadaResponse;
-        this.isLoading = false;
+        console.log('Received API data:', data);
+        console.log('Data type:', typeof data);
+        console.log('Data keys:', Object.keys(data));
+        
+        // Check if data has the expected structure
+        if (data && typeof data === 'object') {
+          this.dataService.updateData(data as DeudaConsolidadaResponse);
+          console.log('Updated DataService with:', data);
+        } else {
+          console.error('Invalid data structure received:', data);
+          this.dataService.setError('Formato de datos inválido recibido del servidor');
+        }
+        this.dataService.setLoading(false);
       },
       error: (error: Error) => {
-        this.errorMessage = error.message;
-        this.isLoading = false;
+        console.error('API Error:', error);
+        this.dataService.setError(error.message);
+        this.dataService.setLoading(false);
       }
     });
   }
 
   limpiarConsulta(): void {
     this.cedula = '';
-    this.consultaData = null;
-    this.errorMessage = '';
+    this.dataService.clearData();
   }
 
   formatCurrency(value: number): string {
@@ -54,25 +69,37 @@ export class Home {
     }).format(value);
   }
 
-  // Demo data method for testing
+  // Demo data method for testing - now calls actual API
   testSetData(): void {
-    this.consultaData = {
-      clienteId: '1234500002',
-      nombreCliente: 'Andrés Martínez',
-      fechaConsulta: '2025-10-24T10:00:00Z',
-      energia: {
-        periodo: '202510',
-        consumo: '56 kWh',
-        valorPagar: 1120.00
+    // Use a demo cedula to fetch real data from API
+    const demoCedula = '1234500002';
+    this.cedula = demoCedula;
+    
+    this.dataService.setLoading(true);
+    this.dataService.setError('');
+    this.dataService.updateData(null);
+
+    this.apiService.consultarDeudaConsolidada(demoCedula).subscribe({
+      next: (data: any) => {
+        console.log('Received API data:', data);
+        console.log('Data type:', typeof data);
+        console.log('Data keys:', Object.keys(data));
+        
+        // Check if data has the expected structure
+        if (data && typeof data === 'object') {
+          this.dataService.updateData(data as DeudaConsolidadaResponse);
+          console.log('Updated DataService with:', data);
+        } else {
+          console.error('Invalid data structure received:', data);
+          this.dataService.setError('Formato de datos inválido recibido del servidor');
+        }
+        this.dataService.setLoading(false);
       },
-      acueducto: {
-        periodo: '202508',
-        consumo: '31 m³',
-        valorPagar: 205575.83
-      },
-      totalAPagar: 206695.83
-    };
-    this.isLoading = false;
-    this.errorMessage = '';
+      error: (error: Error) => {
+        console.error('API Error:', error);
+        this.dataService.setError(error.message);
+        this.dataService.setLoading(false);
+      }
+    });
   }
 }
