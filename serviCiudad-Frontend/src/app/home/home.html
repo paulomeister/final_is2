@@ -10,25 +10,25 @@
     <section class="search-section">
       <div class="search-container">
         <div class="input-group">
-          <input 
-            type="text" 
-            [(ngModel)]="cedula" 
+          <input
+            type="text"
+            [(ngModel)]="cedula"
             placeholder="Ingrese su número de cédula"
             class="cedula-input"
             [disabled]="isLoading"
             (keyup.enter)="consultar()"
           >
-          <button 
-            (click)="consultar()" 
+          <button
+            (click)="consultar()"
             [disabled]="isLoading || !cedula.trim()"
             class="consultar-btn"
           >
             <span *ngIf="!isLoading">Consultar</span>
             <span *ngIf="isLoading">Consultando...</span>
           </button>
-          
-         <!--  <button 
-            (click)="testSetData()" 
+
+         <!--  <button
+            (click)="testSetData()"
             class="demo-btn"
             [disabled]="isLoading"
           >
@@ -36,7 +36,7 @@
             <span *ngIf="isLoading">Consultando...</span>
           </button> -->
         </div>
-        
+
         <!-- Error Message -->
         <div *ngIf="errorMessage" class="error-message">
           {{ errorMessage }}
@@ -59,7 +59,7 @@
           <h2>Resultados de la Consulta</h2>
           <button (click)="limpiarConsulta()" class="limpiar-btn">Nueva Consulta</button>
         </div>
-        
+
         <div class="results-table">
           <table>
             <tbody>

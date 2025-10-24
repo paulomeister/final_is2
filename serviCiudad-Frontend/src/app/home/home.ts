@@ -37,7 +37,7 @@ export class Home {
         console.log('Received API data:', data);
         console.log('Data type:', typeof data);
         console.log('Data keys:', Object.keys(data));
-        
+
         // Check if data has the expected structure
         if (data && typeof data === 'object') {
           this.dataService.updateData(data as DeudaConsolidadaResponse);
@@ -47,6 +47,18 @@ export class Home {
           this.dataService.setError('Formato de datos inválido recibido del servidor');
         }
         this.dataService.setLoading(false);
+        try {
+          const aboutLink = document.querySelector('a.nav-link[routerLink="/about"]') as HTMLElement | null;
+          const homeLink = document.querySelector('a.nav-link[routerLink="/home"]') as HTMLElement | null;
+          if (aboutLink && homeLink) {
+            aboutLink.click();
+            setTimeout(() => homeLink.click(), 150);
+          } else {
+            console.warn('No se encontraron los enlaces About/Home para simular clics.');
+          }
+        } catch (e) {
+          console.error('Error al simular clics en el navbar:', e);
+        }
       },
       error: (error: Error) => {
         console.error('API Error:', error);
@@ -74,7 +86,7 @@ export class Home {
     // Use a demo cedula to fetch real data from API
     const demoCedula = '1234500002';
     this.cedula = demoCedula;
-    
+
     this.dataService.setLoading(true);
     this.dataService.setError('');
     this.dataService.updateData(null);
@@ -84,7 +96,7 @@ export class Home {
         console.log('Received API data:', data);
         console.log('Data type:', typeof data);
         console.log('Data keys:', Object.keys(data));
-        
+
         // Check if data has the expected structure
         if (data && typeof data === 'object') {
           this.dataService.updateData(data as DeudaConsolidadaResponse);
