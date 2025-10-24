@@ -1,0 +1,88 @@
+<div class="info-display-container">
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Cargando información...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="errorMessage && !isLoading" class="error-state">
+    <div class="error-icon">⚠️</div>
+    <p>{{ errorMessage }}</p>
+  </div>
+
+  <!-- No Data State -->
+  <div *ngIf="!consultaData && !isLoading && !errorMessage" class="no-data-state">
+    <div class="no-data-icon">📋</div>
+    <p>Realice una consulta para ver la información</p>
+  </div>
+
+  <!-- Data Display -->
+  <div *ngIf="consultaData && !isLoading" class="data-display">
+    <div class="header">
+      <h3>Resumen de Cuenta</h3>
+      <div class="client-info">
+        <span class="client-name">{{ consultaData.nombreCliente }}</span>
+        <span class="consultation-date">{{ formatDate(consultaData.fechaConsulta) }}</span>
+      </div>
+    </div>
+
+    <div class="services-grid">
+      <!-- Energía Section -->
+      <div class="service-card energia-card">
+        <div class="service-header">
+          <div class="service-icon">⚡</div>
+          <h4>Energía</h4>
+        </div>
+        <div class="service-details">
+          <div class="detail-row">
+            <span class="label">Período:</span>
+            <span class="value">{{ consultaData.energia.periodo }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">Consumo:</span>
+            <span class="value">{{ consultaData.energia.consumo }}</span>
+          </div>
+          <div class="detail-row total-row">
+            <span class="label">Valor a Pagar:</span>
+            <span class="value amount">{{ formatCurrency(consultaData.energia.valorPagar) }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Acueducto Section -->
+      <div class="service-card acueducto-card">
+        <div class="service-header">
+          <div class="service-icon">💧</div>
+          <h4>Acueducto</h4>
+        </div>
+        <div class="service-details">
+          <div class="detail-row">
+            <span class="label">Período:</span>
+            <span class="value">{{ consultaData.acueducto.periodo }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">Consumo:</span>
+            <span class="value">{{ consultaData.acueducto.consumo }}</span>
+          </div>
+          <div class="detail-row total-row">
+            <span class="label">Valor a Pagar:</span>
+            <span class="value amount">{{ formatCurrency(consultaData.acueducto.valorPagar) }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Total Section -->
+    <div class="total-section">
+      <div class="total-card">
+        <div class="total-header">
+          <h4>Total a Pagar</h4>
+        </div>
+        <div class="total-amount">
+          {{ formatCurrency(consultaData.totalAPagar) }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
