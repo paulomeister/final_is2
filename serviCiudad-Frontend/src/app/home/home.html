@@ -1,0 +1,105 @@
+<div class="home-container">
+  <div class="content">
+    <!-- Header Section -->
+    <header class="page-header">
+      <h1 class="main-title">Consulta de Facturación Unificada</h1>
+      <p class="subtitle">Ingrese su número de cédula para consultar el estado de sus servicios.</p>
+    </header>
+
+    <!-- Search Section -->
+    <section class="search-section">
+      <div class="search-container">
+        <div class="input-group">
+          <input 
+            type="text" 
+            [(ngModel)]="cedula" 
+            placeholder="Ingrese su número de cédula"
+            class="cedula-input"
+            [disabled]="isLoading"
+            (keyup.enter)="consultar()"
+          >
+          <button 
+            (click)="consultar()" 
+            [disabled]="isLoading || !cedula.trim()"
+            class="consultar-btn"
+          >
+            <span *ngIf="!isLoading">Consultar</span>
+            <span *ngIf="isLoading">Consultando...</span>
+          </button>
+        </div>
+        
+        <!-- Error Message -->
+        <div *ngIf="errorMessage" class="error-message">
+          {{ errorMessage }}
+        </div>
+      </div>
+    </section>
+
+    <!-- Results Section -->
+    <section *ngIf="showResults && consultaData" class="results-section">
+      <div class="results-container">
+        <div class="results-header">
+          <h2>Resultados de la Consulta</h2>
+          <button (click)="limpiarConsulta()" class="limpiar-btn">Nueva Consulta</button>
+        </div>
+        
+        <div class="results-table">
+          <table>
+            <tbody>
+              <tr>
+                <td class="field-label">Nombre del cliente</td>
+                <td class="field-value">{{ consultaData.nombre }}</td>
+              </tr>
+              <tr>
+                <td class="field-label">Fecha de consulta</td>
+                <td class="field-value">{{ consultaData.fecha_consulta }}</td>
+              </tr>
+              <tr>
+                <td class="field-label">Período Energía</td>
+                <td class="field-value">{{ consultaData.energia.periodo }}</td>
+              </tr>
+              <tr>
+                <td class="field-label">Consumo Energía (kWh)</td>
+                <td class="field-value">{{ consultaData.energia.consumo }}</td>
+              </tr>
+              <tr>
+                <td class="field-label">Valor a pagar Energía</td>
+                <td class="field-value">{{ formatCurrency(consultaData.energia.valor_a_pagar) }}</td>
+              </tr>
+              <tr>
+                <td class="field-label">Período Agua</td>
+                <td class="field-value">{{ consultaData.agua.periodo }}</td>
+              </tr>
+              <tr>
+                <td class="field-label">Consumo Agua (m³)</td>
+                <td class="field-value">{{ consultaData.agua.consumido }}</td>
+              </tr>
+              <tr>
+                <td class="field-label">Valor a pagar Agua</td>
+                <td class="field-value">{{ formatCurrency(consultaData.agua.valor_a_pagar) }}</td>
+              </tr>
+              <tr class="total-row">
+                <td class="field-label">Valor total a pagar</td>
+                <td class="field-value total-value">{{ formatCurrency(consultaData.valor_total_a_pagar) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Empty State -->
+    <section *ngIf="!showResults && !isLoading && !errorMessage" class="empty-state">
+      <div class="empty-state-content">
+        <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="40" cy="40" r="40" fill="#f0f0f0"/>
+          <path d="M40 20c-11.046 0-20 8.954-20 20s8.954 20 20 20 20-8.954 20-20-8.954-20-20-20zm0 36c-8.837 0-16-7.163-16-16s7.163-16 16-16 16 7.163 16 16-7.163 16-16 16z" fill="#004296"/>
+          <path d="M40 28c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm0 20c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8z" fill="#004296"/>
+          <circle cx="40" cy="40" r="4" fill="#004296"/>
+        </svg>
+        <h3>Consulta de Servicios</h3>
+        <p>Ingrese su número de cédula para consultar el estado de sus servicios de energía y agua.</p>
+      </div>
+    </section>
+  </div>
+</div>

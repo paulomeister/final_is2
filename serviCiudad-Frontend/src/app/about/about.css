@@ -1,0 +1,237 @@
+/* About Page Styles for ServiCiudad Conectada */
+.about-container {
+  padding-top: 90px; /* Account for fixed header */
+  min-height: 100vh;
+  background-color: #ffffff;
+  color: #000000;
+  font-family: 'Roboto', 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Header Section */
+.page-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.main-title {
+  color: #004296;
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+
+.title-divider {
+  width: 80px;
+  height: 3px;
+  background-color: #00a243;
+  margin: 0 auto;
+  border-radius: 2px;
+}
+
+/* Project Description Section */
+.project-description {
+  margin-bottom: 4rem;
+  text-align: center;
+}
+
+.description-text {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  color: #333;
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+/* Developers Section */
+.developers-section {
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  color: #004296;
+  font-size: 2rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 2.5rem;
+  letter-spacing: -0.01em;
+}
+
+.developers-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.developer-card {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.developer-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  border-color: #00a243;
+}
+
+.developer-avatar {
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.developer-avatar svg {
+  transition: transform 0.3s ease;
+}
+
+.developer-card:hover .developer-avatar svg {
+  transform: scale(1.05);
+}
+
+.developer-name {
+  color: #000000;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  transition: color 0.3s ease;
+}
+
+.developer-card:hover .developer-name {
+  color: #004296;
+}
+
+.developer-role {
+  color: #666;
+  font-size: 0.9rem;
+  margin: 0;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.developer-card:hover .developer-role {
+  color: #00a243;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .developers-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .content {
+    padding: 1.5rem;
+  }
+  
+  .main-title {
+    font-size: 2rem;
+  }
+  
+  .section-title {
+    font-size: 1.7rem;
+  }
+  
+  .description-text {
+    font-size: 1.1rem;
+    line-height: 1.7;
+  }
+  
+  .developers-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.2rem;
+  }
+  
+  .developer-card {
+    padding: 1.2rem;
+  }
+  
+  .developer-name {
+    font-size: 1rem;
+  }
+  
+  .developer-role {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .content {
+    padding: 1rem;
+  }
+  
+  .main-title {
+    font-size: 1.8rem;
+  }
+  
+  .section-title {
+    font-size: 1.5rem;
+  }
+  
+  .description-text {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  
+  .developers-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .developer-card {
+    padding: 1rem;
+  }
+  
+  .developer-avatar svg {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .developer-name {
+    font-size: 0.95rem;
+  }
+  
+  .developer-role {
+    font-size: 0.8rem;
+  }
+}
+
+/* Additional hover effects and animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.developer-card {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.developer-card:nth-child(1) { animation-delay: 0.1s; }
+.developer-card:nth-child(2) { animation-delay: 0.2s; }
+.developer-card:nth-child(3) { animation-delay: 0.3s; }
+.developer-card:nth-child(4) { animation-delay: 0.4s; }
+.developer-card:nth-child(5) { animation-delay: 0.5s; }
+.developer-card:nth-child(6) { animation-delay: 0.6s; }
