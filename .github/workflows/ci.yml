@@ -25,12 +25,14 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.m2/repository
-          key: ${{ runner.os }}-m2-${{ matrix.java }}-${{ hashFiles('**/pom.xml') }}
+          # key based on backend pom only
+          key: ${{ runner.os }}-m2-${{ matrix.java }}-${{ hashFiles('serviciudad-Backend/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-m2-${{ matrix.java }}-
             ${{ runner.os }}-m2-
 
       - name: Run backend unit tests
+        working-directory: serviciudad-Backend
         run: ./mvnw -B test
 
   frontend:
@@ -45,22 +47,25 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
-          cache: 'npm'
 
       - name: Cache npm cache
         uses: actions/cache@v3
         with:
           path: ~/.npm
-          key: ${{ runner.os }}-node-${{ matrix.node }}-${{ hashFiles('**/package-lock.json') }}
+          # prefer package-lock, fall back to package.json so cache works even without lockfile
+          key: ${{ runner.os }}-node-${{ matrix.node }}-${{ hashFiles('serviCiudad-Frontend/package-lock.json', 'serviCiudad-Frontend/package.json') }}
           restore-keys: |
             ${{ runner.os }}-node-${{ matrix.node }}-
             ${{ runner.os }}-node-
 
       - name: Install dependencies
+        working-directory: serviCiudad-Frontend
         run: npm install
 
       - name: Run frontend tests
+        working-directory: serviCiudad-Frontend
         run: npm test
 
       - name: Build frontend
+        working-directory: serviCiudad-Frontend
         run: npm run build
