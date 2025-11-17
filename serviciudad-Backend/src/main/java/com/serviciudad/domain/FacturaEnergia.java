@@ -6,9 +6,6 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
-/**
- * Modelo simple (no JPA) que representa la factura leída desde el archivo ancho-fijo.
- */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

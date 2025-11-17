@@ -18,33 +18,51 @@ import java.util.List;
 @Component
 public class AdaptadorArchivoEnergia {
 
-    private final String resourcePath = "/consumos_energia.txt";
+    /** Ruta por defecto en el classpath */
+    private final String resourcePath;
 
+    /** Constructor usado por Spring */
+    public AdaptadorArchivoEnergia() { this("/consumos_energia.txt"); }
+
+    /** Constructor alterno para pruebas, permite inyectar un recurso distinto */
+    public AdaptadorArchivoEnergia(String resourcePath) { this.resourcePath = resourcePath; }
+
+    /**
+     * Lee el archivo de recursos por la ruta configurada.
+     */
     public List<FacturaEnergia> leerFacturas() {
+        return leerFacturas(null);
+    }
+
+    /**
+     * Variante que acepta un InputStream externo (útil en pruebas). Si el stream es null
+     * se intenta cargar el recurso del classpath.
+     */
+    public List<FacturaEnergia> leerFacturas(InputStream overrideStream) {
         List<FacturaEnergia> lista = new ArrayList<>();
-        try (InputStream is = this.getClass().getResourceAsStream(resourcePath)) {
-            if (is == null) return lista;
-            try (BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
-                String line;
-                while ((line = br.readLine()) != null) {
-                    if (line.trim().isEmpty()) continue;
-                    // defensivo: proteger contra longitudes menores
-                    String id = safeSubstring(line, 0, 10).trim();
-                    String periodo = safeSubstring(line, 10, 16).trim();
-                    String consumoStr = safeSubstring(line, 16, 24).trim();
-                    String valorStr = line.length() > 24 ? line.substring(24).trim() : "0";
-                    int consumo = parseLeadingInt(consumoStr);
-                    BigDecimal valor = parseDecimal(valorStr);
-                    FacturaEnergia f = new FacturaEnergia();
-                    f.setIdCliente(id);
-                    f.setPeriodo(periodo);
-                    f.setConsumoKwh(consumo);
-                    f.setValorPagar(valor);
-                    lista.add(f);
-                }
+        InputStream is = overrideStream != null ? overrideStream : this.getClass().getResourceAsStream(resourcePath);
+        if (is == null) return lista;
+        try (InputStream autoClose = is; // garantiza cierre también para streams externos
+             BufferedReader br = new BufferedReader(new InputStreamReader(autoClose, StandardCharsets.UTF_8))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (line.trim().isEmpty()) continue;
+                // defensivo: proteger contra longitudes menores
+                String id = safeSubstring(line, 0, 10).trim();
+                String periodo = safeSubstring(line, 10, 16).trim();
+                String consumoStr = safeSubstring(line, 16, 24).trim();
+                String valorStr = line.length() > 24 ? line.substring(24).trim() : "0";
+                int consumo = parseLeadingInt(consumoStr);
+                BigDecimal valor = parseDecimal(valorStr);
+                FacturaEnergia f = new FacturaEnergia();
+                f.setIdCliente(id);
+                f.setPeriodo(periodo);
+                f.setConsumoKwh(consumo);
+                f.setValorPagar(valor);
+                lista.add(f);
             }
         } catch (Exception e) {
-            // log if needed
+            // log si se desea
             e.printStackTrace();
         }
         return lista;

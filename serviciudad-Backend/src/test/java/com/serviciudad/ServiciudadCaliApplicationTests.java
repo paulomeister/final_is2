@@ -5,7 +5,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
-@ActiveProfiles("default") // usa tu perfil por defecto
+@ActiveProfiles("test") // usa el perfil de pruebas con H2
 class ServiciudadCaliApplicationTests {
 
     @Test

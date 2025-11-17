@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [17, 21]
+        java: [21, 25]
     steps:
       - uses: actions/checkout@v3
 
@@ -25,42 +25,17 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.m2/repository
-          key: ${{ runner.os }}-m2-${{ matrix.java }}-${{ hashFiles('**/pom.xml') }}
+          # key based on backend pom only
+          key: ${{ runner.os }}-m2-${{ matrix.java }}-${{ hashFiles('serviciudad-Backend/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-m2-${{ matrix.java }}-
             ${{ runner.os }}-m2-
 
-      - name: Run backend unit tests
-        run: ./mvnw -B test
+      - name: Make Maven wrapper executable
+        working-directory: serviciudad-Backend
+        run: chmod +x mvnw
 
-  frontend:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node: [18, 20]
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node }}
-          cache: 'npm'
-
-      - name: Cache npm cache
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ matrix.node }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-${{ matrix.node }}-
-            ${{ runner.os }}-node-
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run frontend tests
-        run: npm test
-
-      - name: Build frontend
-        run: npm run build
+      - name: Build, test and verify backend (with JaCoCo)
+        working-directory: serviciudad-Backend
+        # "verify" ejecuta: compilar, tests y la fase de verificación donde Jacoco aplica sus reglas
+        run: ./mvnw -B verify
