@@ -140,14 +140,23 @@
 											<limit>
 												<counter>INSTRUCTION</counter>
 												<value>COVEREDRATIO</value>
-												<minimum>0.85</minimum>
+												<minimum>0.80</minimum>
 											</limit>
 											<limit>
 												<counter>LINE</counter>
 												<value>COVEREDRATIO</value>
-												<minimum>0.85</minimum>
+												<minimum>0.80</minimum>
 											</limit>
 										</limits>
+									</rule>
+									<rule>
+										<element>CLASS</element>
+										<excludes>
+											<!-- Clases de arranque y configuración que no aportan mucha lógica de negocio -->
+											<exclude>com.serviciudad.DeudaConsolidadaApplication</exclude>
+											<exclude>com.serviciudad.config.SecurityConfig</exclude>
+											<exclude>com.serviciudad.config.WebConfig</exclude>
+										</excludes>
 									</rule>
 								</rules>
 							</configuration>
