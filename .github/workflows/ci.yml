@@ -35,47 +35,7 @@ jobs:
         working-directory: serviciudad-Backend
         run: chmod +x mvnw
 
-      - name: Run backend unit tests
+      - name: Build, test and verify backend (with JaCoCo)
         working-directory: serviciudad-Backend
-        run: ./mvnw -B test
-
-  frontend:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node: [20, 22]
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node }}
-
-      - name: Set up Chrome (for headless tests)
-        uses: browser-actions/setup-chrome@v1
-
-      - name: Cache npm cache
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          # prefer package-lock, fall back to package.json so cache works even without lockfile
-          key: ${{ runner.os }}-node-${{ matrix.node }}-${{ hashFiles('serviCiudad-Frontend/package-lock.json', 'serviCiudad-Frontend/package.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-${{ matrix.node }}-
-            ${{ runner.os }}-node-
-
-      - name: Install dependencies
-        working-directory: serviCiudad-Frontend
-        run: npm ci
-
-      - name: Run frontend tests (headless)
-        working-directory: serviCiudad-Frontend
-        env:
-          CI: true
-        # Pass flags to ng test to run once in headless Chrome for CI
-        run: npm test -- --watch=false --browsers=ChromeHeadless
-
-      - name: Build frontend
-        working-directory: serviCiudad-Frontend
-        run: npm run build -- --configuration production
+        # "verify" ejecuta: compilar, tests y la fase de verificación donde Jacoco aplica sus reglas
+        run: ./mvnw -B verify
