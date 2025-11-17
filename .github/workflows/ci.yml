@@ -1,41 +1,76 @@
-name: CI Pipeline
+name: CI Serviciudad
 
 on:
   push:
-    branches: [master]
+    branches: [ main, master ]
   pull_request:
-    branches: [master]
+    branches: [ main, master ]
 
 jobs:
-  backend:
+  build-and-test:
+    name: Build, test y cobertura (JaCoCo)
     runs-on: ubuntu-latest
+
     strategy:
       matrix:
-        java: [21, 25]
-    steps:
-      - uses: actions/checkout@v3
+        java: [ '21', '25' ]
 
-      - name: Set up Java
+    defaults:
+      run:
+        working-directory: serviciudad-Backend
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up JDK ${{ matrix.java }}
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
+          distribution: temurin
           java-version: ${{ matrix.java }}
+          cache: maven
 
-      - name: Cache Maven local repository
-        uses: actions/cache@v3
+      - name: Build + tests + verify coverage (mvn verify)
+        run: mvn -B -ntp clean verify
+
+      - name: Publicar reporte JaCoCo
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
-          path: ~/.m2/repository
-          # key based on backend pom only
-          key: ${{ runner.os }}-m2-${{ matrix.java }}-${{ hashFiles('serviciudad-Backend/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-m2-${{ matrix.java }}-
-            ${{ runner.os }}-m2-
+          name: jacoco-report-java-${{ matrix.java }}
+          path: target/site/jacoco
+          if-no-files-found: ignore
 
-      - name: Make Maven wrapper executable
-        working-directory: serviciudad-Backend
-        run: chmod +x mvnw
+  canary-deploy:
+    name: Canary deploy (placeholder)
+    needs: build-and-test
+    runs-on: ubuntu-latest
 
-      - name: Build, test and verify backend (with JaCoCo)
+    defaults:
+      run:
         working-directory: serviciudad-Backend
-        # "verify" ejecuta: compilar, tests y la fase de verificación donde Jacoco aplica sus reglas
-        run: ./mvnw -B verify
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      # 👇 Aquí es donde David debe integrar los scripts que mandó el profe
+      - name: Build Docker image (ejemplo)
+        run: |
+          echo "TODO: construir imagen Docker de serviciudad"
+          # docker build -t serviciudad-cali:${GITHUB_SHA} .
+
+      - name: Canary deploy (ejemplo)
+        run: |
+          echo "TODO: ejecutar script canary_deploy.sh"
+          # ./scripts/canary_deploy.sh
+
+      - name: Validar canary (ejemplo)
+        run: |
+          echo "TODO: ejecutar script canary_validate.sh"
+          # ./scripts/canary_validate.sh
+
+      - name: Promover o hacer rollback (ejemplo)
+        run: |
+          echo "TODO: ejecutar script canary_promote_or_rollback.sh"
+          # ./scripts/canary_promote_or_rollback.sh
