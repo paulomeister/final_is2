@@ -1,0 +1,21 @@
+name: Canary Deployment
+
+on:
+  push:
+    branches:
+      - canary
+
+jobs:
+  build-and-deploy-canary:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Build backend (Maven)
+        working-directory: serviciudad-Backend
+        run: ./mvnw -B package
+
+      - name: Deploy Canary Service to Render
+        run: curl -X POST ${{ secrets.RENDER_CANARY_HOOK }}

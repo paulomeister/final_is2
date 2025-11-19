@@ -1,0 +1,12 @@
+name: Promote Canary to Production
+
+on:
+  workflow_dispatch:
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to Render Production
+        run: curl -X POST ${{ secrets.RENDER_PROD_HOOK }}
