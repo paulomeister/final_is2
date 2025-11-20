@@ -23,17 +23,15 @@ jobs:
           distribution: temurin
           java-version: 21
 
-      - name: Build backend for CodeQL
-        working-directory: serviciudad-Backend
-        run: |
-          chmod +x mvnw
-          ./mvnw -B package --no-transfer-progress
-
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v2
         with:
           languages: java
-          source-root: serviciudad-Backend  # << FIX HERE
+          build-mode: autobuild
+          source-root: serviciudad-Backend
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v2
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2
